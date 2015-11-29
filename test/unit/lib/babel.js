@@ -35,10 +35,19 @@ describe("#babel()", function() {
     file(DST_DIR.path, "b.js").text.must.contain("bye");
   });
 
-  it("babel() - failed", function() {
+  it("babel() - unknown file", function() {
     babel.must.raise(/unknown\.js doesn't exist/, [{
       files: {
         [path.join(DST_DIR.path, "unknown.js")]: path.join(SRC_DIR.path, "unknown.js")
+      }
+    }]);
+  });
+
+  it("babel() - syntax error", function() {
+    babel.must.raise(/SyntaxError/, [{
+      presets: ["es2015"],
+      files: {
+        [path.join(DST_DIR.path, "error.js")]: path.join(SRC_DIR.path, "error.js")
       }
     }]);
   });
