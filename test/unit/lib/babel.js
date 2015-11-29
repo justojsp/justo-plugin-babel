@@ -35,6 +35,15 @@ describe("#babel()", function() {
     file(DST_DIR.path, "b.js").text.must.contain("bye");
   });
 
+  it("babel() - destination directory not existing", function() {
+    babel([{
+      presets: ["es2015"],
+      files: {
+        [path.join(DST_DIR.path, "unknown", "a.js")]: path.join(SRC_DIR.path, "a.js")
+      }
+    }]);
+  });
+
   it("babel() - unknown file", function() {
     babel.must.raise(/unknown\.js doesn't exist/, [{
       files: {

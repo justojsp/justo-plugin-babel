@@ -16,6 +16,8 @@ var _child_process = require("child_process");
 
 var _child_process2 = _interopRequireDefault(_child_process);
 
+var _justoFs = require("justo-fs");
+
 /**
  * Runs babel CLI.
  */
@@ -49,6 +51,12 @@ function babel(params) {
       var args = [];
       var res = undefined;
 
+      //create destination dir
+      dst = new _justoFs.File(dst);
+      if (!dst.parent.exists()) dst.parent.create();
+      dst = dst.path;
+
+      //transpile
       if (!params.comments) args.push("--no-comments");
       if (params.presets) {
         args.push("--presets");
