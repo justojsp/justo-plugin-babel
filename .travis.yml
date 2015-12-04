@@ -7,7 +7,7 @@ node_js:
 os:
   - linux
 sudo: false
-before_install: npm install -g grunt-cli babel-cli
+before_install: npm install -g justo-cli babel-cli
 install: npm install
 #before_script:
 #script:

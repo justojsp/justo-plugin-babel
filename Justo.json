@@ -1,0 +1,9 @@
+{
+  "runner": {
+    "main": "Justo.js",
+    "logger": {
+      "minLevel": "info",
+      "maxLevel": "fatal"
+    }
+  }
+}
