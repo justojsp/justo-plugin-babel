@@ -17,6 +17,7 @@ babel;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj :
 
 
   if (!params.files) params.files = {};
+  if (params.src) params.files = params.src;
   if (!params.hasOwnProperty("comments")) params.comments = true;
 
 

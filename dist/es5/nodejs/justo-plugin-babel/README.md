@@ -31,7 +31,7 @@ babel(opts, config) : number
 Configuration object:
 
 - `comments` (boolean). Add comments to the output: `true`, yep; `false`, nope. Default: `true`.
-- `files` (object). The files to compile. The keys are the destinations; and the values, the sources.
+- `files` or `src` (object). The files to compile. The keys are the destinations; and the values, the sources.
 - `presets` (string[]). Presets to load and use.
 - `plugins` (string[]). Plugins to load and use.
 - `retainLines` (boolean). Retain line numbers: `true`, yep, `false`, nope. Default: `false`.
@@ -44,7 +44,7 @@ babel("Build", {
   plugins: [],
   comments: false,
   retainLines: true,
-  files: {
+  src: {
     "build/es5/lib/index.js": "lib/index.js",
     "build/es5/lib/module.js": "lib/module.js"
   }

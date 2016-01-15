@@ -28,7 +28,7 @@ suite("#babel()", function() {
       comments: false,
       retainLines: true,
       presets: ["es2015"],
-      files: {
+      src: {
         [path.join(DST_DIR.path, "a.js")]: path.join(SRC_DIR.path, "a.js"),
         [path.join(DST_DIR.path, "b.js")]: path.join(SRC_DIR.path, "b.js")
       }
@@ -43,7 +43,7 @@ suite("#babel()", function() {
   test("babel() - destination directory not existing", function() {
     babel([{
       presets: ["es2015"],
-      files: {
+      src: {
         [path.join(DST_DIR.path, "unknown", "a.js")]: path.join(SRC_DIR.path, "a.js")
       }
     }]);
@@ -51,7 +51,7 @@ suite("#babel()", function() {
 
   test("babel() - unknown file", function() {
     babel.must.raise(/unknown\.js doesn't exist/, [{
-      files: {
+      src: {
         [path.join(DST_DIR.path, "unknown.js")]: path.join(SRC_DIR.path, "unknown.js")
       }
     }]);
@@ -60,7 +60,7 @@ suite("#babel()", function() {
   test("babel() - syntax error", function() {
     babel.must.raise(/SyntaxError/, [{
       presets: ["es2015"],
-      files: {
+      src: {
         [path.join(DST_DIR.path, "error.js")]: path.join(SRC_DIR.path, "error.js")
       }
     }]);

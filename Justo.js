@@ -5,6 +5,7 @@ const fs = require("justo-fs");
 const clean = require("justo-plugin-fs").clean;
 const copy = require("justo-plugin-fs").copy;
 const jshint = require("justo-plugin-jshint");
+const publish = require("justo-plugin-npm").publish;
 
 //works
 register({name: "build", desc: "Build the package."}, function() {
@@ -55,10 +56,14 @@ register({name: "build", desc: "Build the package."}, function() {
 
 register({name: "test", desc: "Unit test."}, {
   require: "justo-assert",
-  src: [
-    "test/unit/lib/babel.js",
-    "test/unit/lib/index.js"
-  ]
+  src: "test/unit/lib/"
+});
+
+register({name: "publish", desc: "NPM publish."}, function() {
+  publish("Publish in NPM", {
+    who: "justojs",
+    src: "dist/es5/nodejs/justo-plugin-babel"
+  });
 });
 
 register("default", ["build", "test"]);
