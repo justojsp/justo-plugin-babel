@@ -2,4 +2,4 @@
 "justo");exports["default"] = 
 
 
-(0, _justo.simple)({ ns: "org.justojs", name: "babel" }, require("./babel"));module.exports = exports["default"];
+(0, _justo.simple)({ ns: "org.justojs.plugin", name: "babel" }, require("./lib/op"));module.exports = exports["default"];

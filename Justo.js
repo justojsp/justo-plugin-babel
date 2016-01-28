@@ -1,5 +1,5 @@
 //imports
-const register = require("justo").register;
+const catalog = require("justo").catalog;
 const simple = require("justo").simple;
 const fs = require("justo-fs");
 const clean = require("justo-plugin-fs").clean;
@@ -8,7 +8,7 @@ const jshint = require("justo-plugin-jshint");
 const publish = require("justo-plugin-npm").publish;
 
 //works
-register({name: "build", desc: "Build the package."}, function() {
+catalog.workflow({name: "build", desc: "Build the package."}, function() {
   clean.ignore("Clean build directory", {
     dirs: ["build/es5"]
   });
@@ -16,23 +16,23 @@ register({name: "build", desc: "Build the package."}, function() {
   jshint("Best practices", {
     output: true,
     files: [
-      "lib/babel.js",
-      "lib/index.js"
+      "index.js",
+      "lib/op.js"
     ]
   });
 
   simple("Transpile", function() {
     var babel;
 
-    if (fs.exists("./dist/es5/nodejs/justo-plugin-babel")) babel = require("./dist/es5/nodejs/justo-plugin-babel/lib/babel");
-    else babel = require("./build/es5/lib/babel");
+    if (fs.exists("./dist/es5/nodejs/justo-plugin-babel")) babel = require("./dist/es5/nodejs/justo-plugin-babel/lib/op");
+    else babel = require("./build/es5/lib/op");
 
     babel([{
       comments: false,
       retainLines: true,
       files: {
-        "build/es5/lib/index.js": "lib/index.js",
-        "build/es5/lib/babel.js": "lib/babel.js"
+        "build/es5/index.js": "index.js",
+        "build/es5/lib/op.js": "lib/op.js"
       }
     }]);
   })();
@@ -44,6 +44,10 @@ register({name: "build", desc: "Build the package."}, function() {
   copy(
     "Create package",
     {
+      src: "build/es5/index.js",
+      dst: "dist/es5/nodejs/justo-plugin-babel/"
+    },
+    {
       src: "build/es5/lib/",
       dst: "dist/es5/nodejs/justo-plugin-babel/lib"
     },
@@ -54,16 +58,16 @@ register({name: "build", desc: "Build the package."}, function() {
   );
 });
 
-register({name: "test", desc: "Unit test."}, {
+catalog.macro({name: "test", desc: "Unit test."}, {
   require: "justo-assert",
-  src: "test/unit/lib/"
+  src: ["test/unit/index.js", "test/unit/lib/"]
 });
 
-register({name: "publish", desc: "NPM publish."}, function() {
+catalog.workflow({name: "publish", desc: "NPM publish."}, function() {
   publish("Publish in NPM", {
     who: "justojs",
     src: "dist/es5/nodejs/justo-plugin-babel"
   });
 });
 
-register("default", ["build", "test"]);
+catalog.macro({name: "default", desc: "Default task."}, ["build", "test"]);

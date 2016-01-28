@@ -1,6 +1,6 @@
 {
   "name": "justo-plugin-babel",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "Simple task to run babel.",
   "homepage": "http://www.justojs.org",
   "author": {
@@ -45,10 +45,9 @@
     "justo-plugin-npm": "*"
   },
   "preferGlobal": false,
-  "main": "lib/index.js",
+  "main": "index.js",
   "files": [
-    "lib",
-    "test"
+    "lib"
   ],
   "scripts": {
     "test": "justo test"
