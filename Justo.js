@@ -1,4 +1,5 @@
 //imports
+const os = require("os");
 const catalog = require("justo").catalog;
 const simple = require("justo").simple;
 const fs = require("justo-fs");
@@ -6,10 +7,11 @@ const clean = require("justo-plugin-fs").clean;
 const copy = require("justo-plugin-fs").copy;
 const jshint = require("justo-plugin-jshint");
 const publish = require("justo-plugin-npm").publish;
+const cli = require("justo-plugin-cli");
 
 //works
 catalog.workflow({name: "build", desc: "Build the package."}, function() {
-  clean.ignore("Clean build directory", {
+  clean("Clean build directory", {
     dirs: ["build/es5"]
   });
 
@@ -21,21 +23,17 @@ catalog.workflow({name: "build", desc: "Build the package."}, function() {
     ]
   });
 
-  simple("Transpile", function() {
-    var babel;
-
-    if (fs.exists("./dist/es5/nodejs/justo-plugin-babel")) babel = require("./dist/es5/nodejs/justo-plugin-babel/lib/op");
-    else babel = require("./build/es5/lib/op");
-
-    babel([{
-      comments: false,
-      retainLines: true,
-      files: {
-        "build/es5/index.js": "index.js",
-        "build/es5/lib/op.js": "lib/op.js"
-      }
-    }]);
-  })();
+  cli("Transpile", {
+    cmd: /^win/.test(os.platform()) ? "babel.cmd" : "babel",
+    args: [
+      "--presets", "es2015",
+      "--retain-lines",
+      "--no-comments",
+      "-d", "build/es5",
+      "index.js",
+      "lib/op.js"
+    ]
+  });
 
   clean("Clean dist directory", {
     dirs: ["dist/es5"]

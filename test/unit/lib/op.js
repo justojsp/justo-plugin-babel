@@ -8,7 +8,7 @@ const fin = justo.fin;
 const Dir = require("justo-fs").Dir;
 const file = require("justo-assert-fs").file;
 const dir = require("justo-assert-fs").dir;
-const babel = require("../../../dist/es5/nodejs/justo-plugin-babel/lib/op");
+const babel = require("../../../dist/es5/nodejs/justo-plugin-babel/lib/op").default;
 
 //suite
 suite("#babel()", function() {

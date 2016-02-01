@@ -1,17 +1,17 @@
 {
   "name": "justo-plugin-babel",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Simple task to run babel.",
   "homepage": "http://www.justojs.org",
   "author": {
-    "name": "The Justo.js Development Group",
-    "email": "justojs.org@outlook.com",
+    "name": "Justo Labs",
+    "email": "justojs@justolabs.com",
     "url": "http://www.justojs.org"
   },
   "contributors": [
     {
       "name": "Raúl G. González",
-      "email": "raulggonzalezsw@outlook.com",
+      "email": "raulggonzalez@justojs.org",
       "url": ""
     }
   ],
@@ -22,14 +22,14 @@
   ],
   "bugs": {
     "url": "https://github.com/justojsp/justo-plugin-babel/issues",
-    "email": "justojs.org@outlook.com"
+    "email": "issues@justojs.org"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/justojsp/justo-plugin-babel.git"
   },
   "engines": {
-    "node": ">=4.1.0",
+    "node": ">=4.0.0",
     "npm": ">=3.0.0"
   },
   "dependencies": {},
@@ -40,6 +40,7 @@
     "justo-assert": "*",
     "justo-assert-fs": "*",
     "justo-fs": "*",
+    "justo-plugin-cli": "*",
     "justo-plugin-fs": "*",
     "justo-plugin-jshint": "*",
     "justo-plugin-npm": "*"
@@ -51,6 +52,5 @@
   ],
   "scripts": {
     "test": "justo test"
-  },
-  "license": "MIT"
+  }
 }

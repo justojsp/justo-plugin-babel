@@ -2,4 +2,4 @@
 import {simple} from "justo";
 
 //api
-export default simple({ns: "org.justojs.plugin", name: "babel"}, require("./lib/op"));
+module.exports = simple({ns: "org.justojs.plugin", name: "babel"}, require("./lib/op").default);

@@ -1,4 +1,4 @@
-"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports["default"] = 
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
@@ -6,7 +6,7 @@
 
 
 
-op;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { "default": obj };}var _os = require("os");var _os2 = _interopRequireDefault(_os);var _child_process = require("child_process");var _child_process2 = _interopRequireDefault(_child_process);var _justoFs = require("justo-fs");function op(params) {
+op;var _os = require("os");var _os2 = _interopRequireDefault(_os);var _child_process = require("child_process");var _child_process2 = _interopRequireDefault(_child_process);var _justoFs = require("justo-fs");function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function op(params) {
   var cmd;
 
 
@@ -21,7 +21,7 @@ op;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { 
   if (!params.hasOwnProperty("comments")) params.comments = true;
 
 
-  if (/^win/.test(_os2["default"].platform())) cmd = "babel.cmd";else 
+  if (/^win/.test(_os2.default.platform())) cmd = "babel.cmd";else 
   cmd = "babel";var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
 
@@ -51,10 +51,10 @@ op;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { 
       args.push(dst);
       args.push(src);
 
-      res = _child_process2["default"].spawnSync(cmd, args);
+      res = _child_process2.default.spawnSync(cmd, args);
 
       if (res.error) throw res.error;
-      if (res.status) throw new Error(res.stderr.toString());}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator["return"]) {_iterator["return"]();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
+      if (res.status) throw new Error(res.stderr.toString());}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
 
 
-  return 0;}module.exports = exports["default"];
+  return 0;}
