@@ -17,7 +17,7 @@ catalog.workflow({name: "build", desc: "Build the package."}, function() {
 
   jshint("Best practices", {
     output: true,
-    files: [
+    src: [
       "index.js",
       "lib/op.js"
     ]

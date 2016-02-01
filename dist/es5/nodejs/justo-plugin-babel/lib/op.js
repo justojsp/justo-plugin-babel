@@ -7,7 +7,7 @@
 
 
 op;var _os = require("os");var _os2 = _interopRequireDefault(_os);var _child_process = require("child_process");var _child_process2 = _interopRequireDefault(_child_process);var _justoFs = require("justo-fs");function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function op(params) {
-  var cmd;
+  var cmd, args;
 
 
   if (params.length === 0) {
@@ -16,43 +16,54 @@ op;var _os = require("os");var _os2 = _interopRequireDefault(_os);var _child_pro
     params = params[0];}
 
 
-  if (!params.files) params.files = {};
-  if (params.src) params.files = params.src;
+  if (!params.files) params.files = [];
+  if (!(params.files instanceof Array)) params.files = [params.files];
+  if (params.src) params.files = [{ src: params.src, dst: params.dst }];
+  if (params.preset) params.presets = [params.preset];
+  if (params.plugin) params.plugins = [params.plugin];
   if (!params.hasOwnProperty("comments")) params.comments = true;
 
 
   if (/^win/.test(_os2.default.platform())) cmd = "babel.cmd";else 
-  cmd = "babel";var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
+  cmd = "babel";
+
+  args = [];
+  if (!params.comments) args.push("--no-comments");
+  if (params.presets) {
+    args.push("--presets");
+    args.push(params.presets.join(","));}
+
+  if (params.plugins) {
+    args.push("--plugins");
+    args.push(params.plugins.join(","));}
+
+  if (params.retainLines) args.push("--retain-lines");var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
 
 
-    for (var _iterator = Object.keys(params.files)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var dst = _step.value;
-      var src = params.files[dst];
-      var args = [];
+    for (var _iterator = params.files[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var info = _step.value;
       var res = undefined;
+      var ca = args.concat([]);
+      var src = info.src;
+      var dst = info.dst;
 
 
-      dst = new _justoFs.File(dst);
-      if (!dst.parent.exists()) dst.parent.create();
-      dst = dst.path;
+      if (!dst) throw new Error("Expected 'dst' property.");
+      if (!src) continue;
 
 
-      if (!params.comments) args.push("--no-comments");
-      if (params.presets) {
-        args.push("--presets");
-        args.push(params.presets.join(","));}
+      if (/[\/\\]$/.test(dst)) {
+        new _justoFs.Dir(dst).create();
+        ca.push("-d");
+        ca.push(dst);} else 
+      {
+        ca.push("-o");
+        ca.push(dst);}
 
-      if (params.plugins) {
-        args.push("--plugins");
-        args.push(params.plugins.join(","));}
 
-      if (params.retainLines) args.push("--retain-lines");
+      if (typeof src == "string") src = [src];
+      ca = ca.concat(src);
 
-      args.push("-o");
-      args.push(dst);
-      args.push(src);
-
-      res = _child_process2.default.spawnSync(cmd, args);
-
+      res = _child_process2.default.spawnSync(cmd, ca);
       if (res.error) throw res.error;
       if (res.status) throw new Error(res.stderr.toString());}} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
 
