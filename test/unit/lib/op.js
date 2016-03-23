@@ -12,128 +12,145 @@ const babel = require("../../../dist/es5/nodejs/justo-plugin-babel/lib/op").defa
 
 //suite
 suite("#babel()", function() {
-  const SRC_DIR = "test/unit/data";
-  const DST_DIR = path.join(fs.Dir.TMP_DIR, Date.now().toString(), "/");
+  const SRC = "test/unit/data";
+  var DST_DIR, DST;
 
   init("*", function() {
-    new fs.Dir(DST_DIR).create();
+    DST_DIR = fs.Dir.createTmpDir();
+    DST = DST_DIR.path;
   });
 
   fin("*", function() {
-    fs.remove(DST_DIR);
+    DST_DIR.remove();
   });
 
   test("babel() - {src} - without dst", function() {
-    babel.must.raise("Expected 'dst' property.", [[{src: path.join(SRC_DIR, "a.js")}]]);
+    babel.must.raise("Expected 'dst' property.", [[{src: path.join(SRC, "a.js")}]]);
   });
 
   test("babel() - {src, dst} - without files", function() {
     babel([{
-      src: path.join(SRC_DIR, "a.js"),
-      dst: path.join(DST_DIR, "aa.js")
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid/a.js"),
+      dst: path.join(DST, "aa.js")
+    }]).must.be.eq(1);
 
-    file(DST_DIR, "aa.js").must.contain("hello");
+    file(DST, "aa.js").must.contain("hello");
   });
 
   test("babel() - transpile file to file", function() {
     babel([{
-      files: {
-        src: path.join(SRC_DIR, "a.js"),
-        dst: path.join(DST_DIR, "aa.js")
-      }
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid/a.js"),
+      dst: path.join(DST, "aa.js")
+    }]).must.be.eq(1);
 
-    file(DST_DIR, "aa.js").must.contain("hello");
+    file(DST, "aa.js").must.contain("hello");
   });
 
-  test("babel() - transpile files to file", function() {
+  test("babel() - transpile file to dir/", function() {
     babel([{
-      files: {
-        src: [path.join(SRC_DIR, "a.js"), path.join(SRC_DIR, "b.js")],
-        dst: path.join(DST_DIR, "ab.js")
-      }
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid/a.js"),
+      dst: DST + "/"
+    }]).must.be.eq(1);
 
-    file(DST_DIR, "ab.js").must.contain(["hello", "bye"]);
+    file(DST, "a.js").must.contain("hello");
   });
 
-  test("babel() - transpile file to dir", function() {
+  test("babel() - transpile files to dir/", function() {
     babel([{
-      files: {
-        src: path.join(SRC_DIR, "a.js"),
-        dst: DST_DIR
-      }
-    }]).must.be.eq(0);
+      src: [path.join(SRC, "valid/a.js"), path.join(SRC, "valid/b.js")],
+      dst: DST + "/"
+    }]).must.be.eq(2);
 
-    file(DST_DIR, SRC_DIR, "a.js").must.contain("hello");
+    file(DST, "a.js").must.contain("hello");
+    file(DST, "b.js").must.contain("bye");
   });
 
-  test("babel() - transpile files to dir", function() {
+  test("babel() - transpile dir to dir", function() {
     babel([{
-      files: {
-        src: [path.join(SRC_DIR, "a.js"), path.join(SRC_DIR, "b.js")],
-        dst: DST_DIR
-      }
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid"),
+      dst: DST
+    }]).must.be.eq(2);
 
-    file(DST_DIR, SRC_DIR, "a.js").must.contain("hello");
-    file(DST_DIR, SRC_DIR, "b.js").must.contain("bye");
+    file(DST, "a.js").must.contain("hello");
+    file(DST, "b.js").must.contain("bye");
+  });
+
+  test("babel() - transpile dir to dir/", function() {
+    babel([{
+      src: path.join(SRC, "valid"),
+      dst: DST + "/"
+    }]).must.be.eq(2);
+
+    file(DST, "valid", "a.js").must.contain("hello");
+    file(DST, "valid", "b.js").must.contain("bye");
   });
 
   test("babel() - {files: object[]}", function() {
     babel([{
       files: [
-        {src: path.join(SRC_DIR, "a.js"), dst: DST_DIR},
-        {src: path.join(SRC_DIR, "b.js"), dst: DST_DIR}
+        {src: path.join(SRC, "valid/a.js"), dst: DST + "/"},
+        {src: path.join(SRC, "valid/b.js"), dst: DST + "/"}
       ]
-    }]).must.be.eq(0);
+    }]).must.be.eq(2);
 
-    file(DST_DIR, SRC_DIR, "a.js").must.contain("hello");
-    file(DST_DIR, SRC_DIR, "b.js").must.contain("bye");
+    file(DST, "a.js").must.contain("hello");
+    file(DST, "b.js").must.contain("bye");
   });
 
   test("babel() - {comments: true}", function() {
     babel([{
       comments: true,
-      files: {
-        src: path.join(SRC_DIR, "a.js"),
-        dst: path.join(DST_DIR, "aa.js")
-      }
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid/a.js"),
+      dst: path.join(DST, "aa.js")
+    }]).must.be.eq(1);
 
-    file(DST_DIR, "aa.js").must.contain("hello");
-    file(DST_DIR, "aa.js").must.contain("comment");
+    file(DST, "aa.js").must.contain(["hello", "comment"]);
   });
 
   test("babel() - {comments: false}", function() {
     babel([{
       comments: false,
-      files: {
-        src: path.join(SRC_DIR, "a.js"),
-        dst: path.join(DST_DIR, "aa.js")
-      }
-    }]).must.be.eq(0);
+      src: path.join(SRC, "valid/a.js"),
+      dst: path.join(DST, "aa.js")
+    }]).must.be.eq(1);
 
-    file(DST_DIR, "aa.js").must.contain("hello");
-    file(DST_DIR, "aa.js").must.not.contain("comment");
+    file(DST, "aa.js").must.contain("hello");
+    file(DST, "aa.js").must.not.contain("comment");
+  });
+
+  test("babel() - {ignore: string}", function() {
+    babel([{
+      ignore: path.join(SRC, "valid/a.js"),
+      src: path.join(SRC, "valid/"),
+      dst: DST + "/"
+    }]).must.be.eq(1);
+
+    file(DST, "valid/a.js").must.not.exist();
+    file(DST, "valid/b.js").must.exist();
+  });
+
+  test("babel() - {ignore: RegExp}", function() {
+    babel([{
+      ignore: /a\.js$/,
+      src: path.join(SRC, "valid/"),
+      dst: DST + "/"
+    }]).must.be.eq(1);
+
+    file(DST, "valid/a.js").must.not.exist();
+    file(DST, "valid/b.js").must.exist();
   });
 
   test("babel() - unknown file", function() {
-    babel.must.raise(/unknown\.js doesn't exist/, [[{
-      files: {
-        src: path.join(SRC_DIR, "unknown.js"),
-        dst: path.join(DST_DIR, "unknown.js")
-      }
-    }]]);
+    babel([{
+      src: path.join(SRC, "unknown.js"),
+      dst: path.join(DST, "unknown.js")
+    }]).must.be.eq(0);
   });
 
   test("babel() - syntax error", function() {
-    babel.must.raise(/SyntaxError/, [[{
-      files: {
-        src: path.join(SRC_DIR, "error.js"),
-        dst: path.join(DST_DIR, "error.js")
-      }
+    babel.must.raise(SyntaxError, [[{
+      src: path.join(SRC, "error.js"),
+      dst: path.join(DST, "error.js")
     }]]);
   });
 })();

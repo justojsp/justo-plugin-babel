@@ -1,7 +1,7 @@
 {
   "name": "justo-plugin-babel",
-  "version": "0.2.0",
-  "description": "Simple task to run babel.",
+  "version": "0.3.0",
+  "description": "Plugin for running Babel.",
   "homepage": "http://www.justojs.org",
   "author": {
     "name": "Justo Labs",
@@ -18,7 +18,8 @@
   "keywords": [
     "Justo",
     "Justo.js",
-    "justo-plugin"
+    "justo-plugin",
+    "Babel"
   ],
   "bugs": {
     "url": "https://github.com/justojsp/justo-plugin-babel/issues",
@@ -32,7 +33,9 @@
     "node": ">=4.0.0",
     "npm": ">=3.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babel-core": "*"
+  },
   "peerDependencies": {},
   "devDependencies": {
     "babel-preset-es2015": "*",
